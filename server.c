@@ -8,7 +8,7 @@
 #include<arpa/inet.h>
 #include<string.h>
 #include<time.h>
-char cur_user[20];		//
+char cur_user[20];
 struct accountDetails
 {
 	char username[20];
@@ -37,14 +37,14 @@ int checkAccountExists(char username[])
 	int fd1 = open("Accounts.txt", O_CREAT | O_APPEND | O_RDWR , 0666);
 	while(read(fd1, (char *)&user_record, sizeof(struct accountDetails)))
 	{
-		if(!strcmp(user_record.username, username))			//strcmp(char* s1, const char* s2) returns 0 if both strings s1 & s2 are identical
+		if(!strcmp(user_record.username, username))	//strcmp(char* s1, const char* s2) returns 0 if both strings s1 & s2 are identical
 		{
 			close(fd1);
-			return 1;		//Returning 1, if the username already exists in the file.
+			return 1;				//Returning 1, if the username already exists in the file.
 		}
 	}
 	close(fd1);
-	return 0;				//Returning 0, if the username DOESN'T exist in the file.
+	return 0;						//Returning 0, if the username DOESN'T exist in the file.
 }
 int checkJointAccountExists(char username1[],char username2[])
 {
@@ -55,11 +55,11 @@ int checkJointAccountExists(char username1[],char username2[])
 		if((!strcmp(user_record.username1, username1)) && (!strcmp(user_record.username2,username2)) || (!strcmp(user_record.username1, username2)) && (!strcmp(user_record.username2,username1)))
 		{
 			close(fd1);
-			return 1;		//Returning 1, if both username1 & username2 already exists in the file.
+			return 1;				//Returning 1, if both username1 & username2 already exists in the file.
 		}
 	}
 	close(fd1);
-	return 0;				//Returning 0, if the username DOESN'T exist in the file.
+	return 0;						//Returning 0, if the username DOESN'T exist in the file.
 }
 
 void createAccount(char username[], char password[],int sockfd)
@@ -70,7 +70,7 @@ void createAccount(char username[], char password[],int sockfd)
 	strcpy(user_record.username, username);
 	strcpy(user_record.password, password);
 	user_record.balance=0;
-	srand(time(0));												//We use current time as seed for random generator
+	srand(time(0));								//Using current time as seed for random generator
 	user_record.account_number=(rand()%1000)+1000;				//Account Numbers of Single A/C start from 1000
 	write(fd1, (char *)&user_record, sizeof(struct accountDetails));
 	write(sockfd, congo, sizeof(congo));
@@ -86,7 +86,7 @@ void createJointAccount(char username1[], char password1[], char username2[], ch
 	strcpy(user_record.username2, username2);
 	strcpy(user_record.password2, password2);
 	user_record.balance=0;
-	srand(time(0));												//Using current time as seed for random generator
+	srand(time(0));								//Using current time as seed for random generator
 	user_record.account_number=(rand()%1000)+5000;				//Account Numbers of Joint A/C start from 5000
 	write(fd1, (char *)&user_record, sizeof(struct jointAccountDetails));
 	write(sockfd, congo, sizeof(congo));
@@ -101,13 +101,13 @@ void accountSignup(int sockfd,int flag)
 	if(!checkAccountExists(username))
 	{
 		createAccount(username, password, sockfd);
-		if(flag==0)				mainMenu(sockfd);				//0 means user is not an Admin
+		if(flag==0)				mainMenu(sockfd);		//0 means user is not an Admin
 		else if(flag==1)		admin_functions(sockfd);		//1 means user is an Admin
 	}
 	else
 	{
 		write(sockfd, "\nThis Username already exists\n", 31);
-		if(flag==0)				mainMenu(sockfd);				//0 means user is not an Admin
+		if(flag==0)				mainMenu(sockfd);		//0 means user is not an Admin
 		else if(flag==1)		admin_functions(sockfd);		//1 means user is an Admin
 	}	
 }
@@ -121,14 +121,14 @@ void jointAccountSignup(int sockfd, int flag)
 	if(!checkJointAccountExists(username1,username2))
 	{
 		createJointAccount(username1, password1, username2, password2, sockfd);
-		if(flag==0)				mainMenu(sockfd);			//0 means user is not an Admin
-		else if(flag==1)		admin_functions(sockfd);	//1 means user is an Admin
+		if(flag==0)				mainMenu(sockfd);		//0 means user is not an Admin
+		else if(flag==1)		admin_functions(sockfd);		//1 means user is an Admin
 	}
 	else
 	{
 		write(sockfd, "\nThis Username already exists\n", 31);
-		if(flag==0)				mainMenu(sockfd);			//0 means user is not an Admin
-		else if(flag==1)		admin_functions(sockfd);	//1 means user is an Admin
+		if(flag==0)				mainMenu(sockfd);		//0 means user is not an Admin
+		else if(flag==1)		admin_functions(sockfd);		//1 means user is an Admin
 	}
 }
 
@@ -139,7 +139,7 @@ void accountLogin(int sockfd)
 	read(sockfd, password, sizeof(password));
 	char ic[]="\nInvalid Credentials !!! Try again.\n";
 	struct accountDetails user_record;
-	int flag=1;			//NOTE that, If flag is 1, then it means customer was able to login successfully.
+	int flag=1;						//NOTE that, If flag is 1, then it means customer was able to login successfully.
 	int fd1 = open("Accounts.txt", O_CREAT | O_APPEND | O_RDWR , 0666);
 	while(read(fd1, (char *)&user_record, sizeof(struct accountDetails)))
 	{
@@ -153,7 +153,7 @@ void accountLogin(int sockfd)
 		}
 	}
 	close(fd1);
-	flag=0;				//NOTE that, If flag is 0, then it means customer was UNABLE to login successfully.
+	flag=0;							//NOTE that, If flag is 0, then it means customer was UNABLE to login successfully.
 	write(sockfd, &flag, sizeof(flag));
 	write(sockfd, ic, sizeof(ic));
 	mainMenu(sockfd);	
@@ -169,7 +169,7 @@ void jointAccountLogin(int sockfd,int fd)
 	strcpy(cur_user,username1);
 
 	struct jointAccountDetails user_record;
-	int flag=1;			//NOTE that, If flag is 1, then it means customer was able to login successfully.
+	int flag=1;						//NOTE that, If flag is 1, then it means customer was able to login successfully.
 	int fd1 = open("Joint_Account.txt", O_CREAT | O_APPEND | O_RDWR , 0666);
 	while(read(fd1, (char *)&user_record, sizeof(struct jointAccountDetails)))
 	{
@@ -190,7 +190,7 @@ void jointAccountLogin(int sockfd,int fd)
 		}
 	}
 	close(fd1);
-	flag=0;				//NOTE that, If flag is 0, then it means customer was UNABLE to login successfully.
+	flag=0;							//NOTE that, If flag is 0, then it means customer was UNABLE to login successfully.
 	write(sockfd,&flag,sizeof(flag));
 	write(sockfd, ic, sizeof(ic));
 	mainMenu(sockfd);
@@ -333,29 +333,29 @@ void deleteAccount(int sockfd)
 	read(sockfd, username, sizeof(username));
 	if(!checkAccountExists(username))							//If the Account doesn't exist, we are displaying the appropriate message.
 		write(sockfd, nae, sizeof(nae));		
-	else														//If the Account exists, we proceed to delete that record.
+	else											//If the Account exists, we proceed to delete that record.
 	{	
 		struct accountDetails user_record[1000], user_record1;
 		int i=0;
-		lseek(fd1, 0, SEEK_SET);								//Setting the file offset of Accounts.txt to the starting of the file.
-		while(read(fd1, (char *)&user_record[i++], sizeof(struct accountDetails)));		//Going through the Accounts.txt file till we reach EOF.
-		for(int j=0;j<i-1;j++)									//Iterating from 0 to (No. of records present in Accounts.txt file)-1
+		lseek(fd1, 0, SEEK_SET);							//Setting the file offset of Accounts.txt to the starting of the file.
+		while(read(fd1, (char *)&user_record[i++], sizeof(struct accountDetails)));	//Going through the Accounts.txt file till we reach EOF.
+		for(int j=0;j<i-1;j++)								//Iterating from 0 to (No. of records present in Accounts.txt file)-1
 		{
-			if(!strcmp(user_record[j].username, username))		//If the suer_record[j] is the account to be deleted,then we will do nothing and continue with the loop.
+			if(!strcmp(user_record[j].username, username))				//If the suer_record[j] is the account to be deleted,then we will do nothing and continue with the loop.
 				continue;				
-			else												//Else we write all those records into the Accounts2.txt file
+			else									//Else we write all those records into the Accounts2.txt file
 				write(fd2,(char *)&user_record[j],sizeof(struct accountDetails));
 		}
-		lseek(fd2, 0, SEEK_SET);								//Setting the file offset of Accounts2.txt to the starting of the file.
-		fd1=open("Accounts.txt",O_TRUNC|O_RDWR,0666);			//Deleting all the records present in the Accounts.txt file by opening it in O_TRUNC mode.
-		lseek(fd1, 0, SEEK_SET);								//Setting the file offset of Accounts.txt to the starting of the file.
+		lseek(fd2, 0, SEEK_SET);							//Setting the file offset of Accounts2.txt to the starting of the file.
+		fd1=open("Accounts.txt",O_TRUNC|O_RDWR,0666);					//Deleting all the records present in the Accounts.txt file by opening it in O_TRUNC mode.
+		lseek(fd1, 0, SEEK_SET);							//Setting the file offset of Accounts.txt to the starting of the file.
 		while(read(fd2, (char *)&user_record1, sizeof(struct accountDetails)))
 		{
-			write(fd1,(char *)&user_record1,sizeof(struct accountDetails));	//Writing all the records written in Accounts2.txt back to Accounts.txt
+			write(fd1,(char *)&user_record1,sizeof(struct accountDetails));		//Writing all the records written in Accounts2.txt back to Accounts.txt
 		}
-		lseek(fd1, 0, SEEK_SET);								//Setting the file offset of Accounts.txt to the starting of the file.
+		lseek(fd1, 0, SEEK_SET);							//Setting the file offset of Accounts.txt to the starting of the file.
 		write(sockfd, ad, sizeof(ad));							//Sending Account Deleted message to client.
-		open("Accounts2.txt",O_TRUNC|O_RDWR,0666);				//Deleting all the records present in the Accounts2.txt file by opening it in O_TRUNC mode. 
+		open("Accounts2.txt",O_TRUNC|O_RDWR,0666);					//Deleting all the records present in the Accounts2.txt file by opening it in O_TRUNC mode. 
 	}
 	close(fd1);
 	close(fd2);
@@ -411,9 +411,9 @@ void admin_functions(int sockfd)
 	char nae[]="No Account Exists with the given Username.\n";
 	switch(choice)
 	{
-		case 1:	accountSignup(sockfd,1);						break;	//1 means the user is an Admin
+		case 1:	accountSignup(sockfd,1);					break;	//1 means the user is an Admin
 		case 2:	jointAccountSignup(sockfd,1);					break;	//1 means the user is an Admin
-		case 3: deleteAccount(sockfd);							break;
+		case 3: deleteAccount(sockfd);						break;
 		case 4:	deleteJointAccount(sockfd);	     				break;
 		case 5:	read(sockfd, username, sizeof(username));
 				if(checkAccountExists(username))	
@@ -462,11 +462,11 @@ void displayMenu(int sockfd, struct accountDetails user_record)
 	read(sockfd, &choice, sizeof(choice));
 	switch(choice)
 	{
-		case 1: viewAccountDetails(sockfd,user_record);					break;
-		case 2: deposit(sockfd,user_record);							break;
-		case 3: withdraw(sockfd,user_record);							break;
-		case 4: passwordChange(sockfd,user_record);						break;
-		case 5: mainMenu(sockfd);										break;
+		case 1: viewAccountDetails(sockfd,user_record);				break;
+		case 2: deposit(sockfd,user_record);					break;
+		case 3: withdraw(sockfd,user_record);					break;
+		case 4: passwordChange(sockfd,user_record);				break;
+		case 5: mainMenu(sockfd);						break;
 	}
 }
 void jointDisplayMenu(int sockfd,struct jointAccountDetails user_record,struct flock lock,int fd)
@@ -475,14 +475,14 @@ void jointDisplayMenu(int sockfd,struct jointAccountDetails user_record,struct f
 	read(sockfd, &choice, sizeof(choice));
 	switch(choice)
 	{
-		case 1: viewJointAccountDetails(sockfd,user_record,lock,fd);	break;
-		case 2: jointDeposit(sockfd,user_record,lock,fd);				break;
-		case 3: jointWithdraw(sockfd,user_record,lock,fd);				break;
+		case 1: viewJointAccountDetails(sockfd,user_record,lock,fd);		break;
+		case 2: jointDeposit(sockfd,user_record,lock,fd);			break;
+		case 3: jointWithdraw(sockfd,user_record,lock,fd);			break;
 		case 4: jointPasswordChange(sockfd,user_record,lock);			break;
 		case 5: lock.l_type=F_UNLCK;
-				fcntl(fd,F_SETLK,&lock); 
-				mainMenu(sockfd);
-				break;
+			fcntl(fd,F_SETLK,&lock); 
+			mainMenu(sockfd);
+			break;
 	}
 }
 
@@ -492,11 +492,11 @@ void mainMenu(int sockfd)
 	read(sockfd, &choice, sizeof(choice));
 	switch(choice)
 	{
-		case 1: accountSignup(sockfd,0);			break;	//0 means the user is NOT an Admin
-		case 2: accountLogin(sockfd);				break;
-		case 3: jointAccountSignup(sockfd,0);		break;	//0 means the user is NOT an Admin
-		case 4: jointAccountLogin(sockfd,fd);		break;
-		case 5: adminLogin(sockfd);					break;
+		case 1: accountSignup(sockfd,0);					break;	//0 means the user is NOT an Admin
+		case 2: accountLogin(sockfd);						break;
+		case 3: jointAccountSignup(sockfd,0);					break;	//0 means the user is NOT an Admin
+		case 4: jointAccountLogin(sockfd,fd);					break;
+		case 5: adminLogin(sockfd);						break;
 		case 6: exit(0);							break;
 	}
 }
