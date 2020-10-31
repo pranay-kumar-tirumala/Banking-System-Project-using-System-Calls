@@ -65,8 +65,8 @@ void accountLogin(int sockfd)
 	read(sockfd, &flag, sizeof(flag));
 	read(sockfd, buffer, sizeof(buffer));
 	printf("%s",buffer);
-	if(flag==1)				displayMenu(sockfd);					//NOTE that, If flag is 1, then it means customer was able to login successfully.
-	else if(flag==0)		mainMenu(sockfd);						//else if flag is 0, then it means customer has entered incorrect credentials.
+	if(flag==1)			displayMenu(sockfd);	//NOTE that, If flag is 1, then it means customer was able to login successfully.
+	else if(flag==0)		mainMenu(sockfd);	//else if flag is 0, then it means customer has entered incorrect credentials.
 }
 void jointAccountLogin(int sockfd)
 {
@@ -231,10 +231,10 @@ void admin_functions(int sockfd)
 	write(sockfd, &choice, sizeof(choice));
 	switch(choice)
 	{
-		case 1:	accountSignup(sockfd,1);						break;	//1 means the user is an Admin
+		case 1:	accountSignup(sockfd,1);					break;	//1 means the user is an Admin
 		case 2:	jointAccountSignup(sockfd,1);					break;	//1 means the user is an Admin
-		case 3:	deleteAccount(sockfd);							break;
-		case 4:	deleteJointAccount(sockfd);						break;
+		case 3:	deleteAccount(sockfd);						break;
+		case 4:	deleteJointAccount(sockfd);					break;
 		case 5:	printf("\nEnter username to search: ");
 					scanf(" %s", username);
 				write(sockfd, username, sizeof(username));
@@ -283,12 +283,12 @@ void displayMenu(int sockfd)
 	write(sockfd, &choice, sizeof(choice));
 	switch(choice)
 	{
-		case 1: viewAccountDetails(sockfd);						break;
-		case 2: deposit(sockfd);								break;
-		case 3: withdraw(sockfd);								break;
-		case 4: passwordChange(sockfd);							break;
-		case 5: mainMenu(sockfd);								break;
-		default: printf("Please enter proper choice:\n");		break;
+		case 1: viewAccountDetails(sockfd);					break;
+		case 2: deposit(sockfd);						break;
+		case 3: withdraw(sockfd);						break;
+		case 4: passwordChange(sockfd);						break;
+		case 5: mainMenu(sockfd);						break;
+		default: printf("Please enter proper choice:\n");			break;
 	}
 }
 void jointDisplayMenu(int sockfd)
@@ -301,10 +301,10 @@ void jointDisplayMenu(int sockfd)
 	switch(choice)
 	{
 		case 1: viewJointAccountDetails(sockfd);				break;
-		case 2: jointDeposit(sockfd);							break;
-		case 3: jointWithdraw(sockfd);							break;
+		case 2: jointDeposit(sockfd);						break;
+		case 3: jointWithdraw(sockfd);						break;
 		case 4: jointPasswordChange(sockfd);					break;
-		case 5: mainMenu(sockfd);								break;
+		case 5: mainMenu(sockfd);						break;
 	}
 }
 
@@ -317,12 +317,12 @@ void mainMenu(int sockfd)
 	write(sockfd, &choice, sizeof(choice));
 	switch(choice)
 	{
-		case 1: accountSignup(sockfd,1);						break;	//1 means the user is not an Admin
-		case 2: accountLogin(sockfd);							break;
+		case 1: accountSignup(sockfd,1);					break;	//1 means the user is not an Admin
+		case 2: accountLogin(sockfd);						break;
 		case 3: jointAccountSignup(sockfd,1);					break;	//1 means the user is not an Admin
-		case 4: jointAccountLogin(sockfd);						break;
-		case 5: adminLogin(sockfd);								break;
-		case 6: exit(0);										break;
+		case 4: jointAccountLogin(sockfd);					break;
+		case 5: adminLogin(sockfd);						break;
+		case 6: exit(0);							break;
 	}
 }
 int main(int argc,char *argv[])
