@@ -16,7 +16,7 @@ void accountSignup(int sockfd, int flag)
 {
 	int account_id;
 	char username[20],password[20], buffer[51];
-	printf("\n**************************************** WELCOME TO NORMAL ACCOUNT SIGN-UP PAGE ****************************************\n");
+	printf("\n*************************************** WELCOME TO NORMAL ACCOUNT SIGN-UP PAGE ****************************************\n");
 	printf("Enter username: ");
 		scanf(" %s",username);
 	printf("Enter password: ");
