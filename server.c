@@ -494,10 +494,10 @@ void mainMenu(int sockfd)
 	{
 		case 1: accountSignup(sockfd,0);					break;	//0 means the user is NOT an Admin
 		case 2: accountLogin(sockfd);						break;
-		case 3: jointAccountSignup(sockfd,0);					break;	//0 means the user is NOT an Admin
-		case 4: jointAccountLogin(sockfd,fd);					break;
-		case 5: adminLogin(sockfd);						break;
-		case 6: exit(0);							break;
+		case 3: jointAccountSignup(sockfd,0);				break;	//0 means the user is NOT an Admin
+		case 4: jointAccountLogin(sockfd,fd);				break;
+		case 5: adminLogin(sockfd);							break;
+		case 6: exit(0);									break;
 	}
 }
 int main(int argc,char *argv[])

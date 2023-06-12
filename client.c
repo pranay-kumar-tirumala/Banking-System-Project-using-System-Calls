@@ -284,11 +284,11 @@ void displayMenu(int sockfd)
 	switch(choice)
 	{
 		case 1: viewAccountDetails(sockfd);					break;
-		case 2: deposit(sockfd);						break;
-		case 3: withdraw(sockfd);						break;
+		case 2: deposit(sockfd);							break;
+		case 3: withdraw(sockfd);							break;
 		case 4: passwordChange(sockfd);						break;
-		case 5: mainMenu(sockfd);						break;
-		default: printf("Please enter proper choice:\n");			break;
+		case 5: mainMenu(sockfd);							break;
+		default: printf("Please enter proper choice:\n");	break;
 	}
 }
 void jointDisplayMenu(int sockfd)
